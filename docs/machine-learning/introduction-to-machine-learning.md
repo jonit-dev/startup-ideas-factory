@@ -95,7 +95,3 @@ Overfitting occurs when a model learns the training data too well but performs p
 - Machine learning allows computers to learn from data (important).
 - There are multiple types, including supervised, unsupervised, and reinforcement learning (important).
 - The key elements include features, models, training, and testing (important).
-  
-I hope this introduction provides a solid foundation for your journey into machine learning. Feel free to reach out with any questions or for deeper dives into specific topics.
-
-Would you like to proceed with exploring any of these topics in greater depth?
