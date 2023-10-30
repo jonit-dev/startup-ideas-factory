@@ -11,16 +11,29 @@ async function convertMarkdownToPdf(inputFile: string, outputFile: string) {
   const md = new MarkdownIt({ html: true });
   const htmlContent = md.render(markdownContent);
 
+  // Include CSS
+  const styledHtmlContent = `
+    <head>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="styles.css">
+    </head>
+    <body>
+      ${htmlContent}
+    </body>
+  `;
+
   // Save HTML content to a temporary file
   const tempHtmlFile = path.join(__dirname, 'temp.html');
-  fs.writeFileSync(tempHtmlFile, htmlContent);
+  fs.writeFileSync(tempHtmlFile, styledHtmlContent);
 
   // Set up Express.js server
   const app = express();
   app.use('/assets', express.static(path.join(__dirname, 'docs', 'assets')));
   app.get('/', (req, res) => res.sendFile(tempHtmlFile));
 
-  // Start server
+  // Start server (its required to run a server because of the images, otherwise they won't load on the pdf!)
   const server = app.listen(0); // 0 to assign a random free port
   const port = (server.address() as AddressInfo).port;
 

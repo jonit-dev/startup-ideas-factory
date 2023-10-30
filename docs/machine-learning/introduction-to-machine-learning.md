@@ -4,7 +4,7 @@
 
 Welcome to the world of machine learning (ML)! The goal here is to equip you with foundational knowledge about ML, focusing on its key concepts, types, and practical applications. Whether you want to develop intelligent software or dive into data analytics, understanding ML is crucial.
 
-<img src="../assets/image.png" alt="Alt text" width="200" height="200"/>
+<img src="../assets/image.png" alt="Machine learnign text" width="300" height="300"/>
 
 ---
 
