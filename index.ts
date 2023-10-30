@@ -1,21 +1,39 @@
+import express from 'express';
 import fs from 'fs';
 import { glob } from 'glob';
 import MarkdownIt from 'markdown-it';
+import { AddressInfo } from 'net';
 import path from 'path';
 import puppeteer from 'puppeteer';
 
 async function convertMarkdownToPdf(inputFile: string, outputFile: string) {
   const markdownContent = fs.readFileSync(inputFile, 'utf-8');
-  const md = new MarkdownIt();
+  const md = new MarkdownIt({ html: true });
   const htmlContent = md.render(markdownContent);
 
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+  // Save HTML content to a temporary file
+  const tempHtmlFile = path.join(__dirname, 'temp.html');
+  fs.writeFileSync(tempHtmlFile, htmlContent);
 
-  await page.setContent(htmlContent);
+  // Set up Express.js server
+  const app = express();
+  app.use('/assets', express.static(path.join(__dirname, 'docs', 'assets')));
+  app.get('/', (req, res) => res.sendFile(tempHtmlFile));
+
+  // Start server
+  const server = app.listen(0); // 0 to assign a random free port
+  const port = (server.address() as AddressInfo).port;
+
+  // Launch Puppeteer
+  const browser = await puppeteer.launch({ headless: 'new' });
+  const page = await browser.newPage();
+  await page.goto(`http://localhost:${port}`);
   await page.pdf({ path: outputFile, format: 'A4' });
 
+  // Cleanup
   await browser.close();
+  server.close();
+  fs.unlinkSync(tempHtmlFile); // Delete the temporary HTML file
 }
 
 async function convertAllMarkdownsInDirectory(directory: string) {
