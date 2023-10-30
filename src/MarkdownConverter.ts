@@ -43,7 +43,16 @@ export class MarkdownConverter {
       const browser = await puppeteer.launch({ headless: 'new' });
       const page = await browser.newPage();
       await page.goto(`http://localhost:${port}`);
-      await page.pdf({ path: outputFile, format: 'A4' });
+      await page.pdf({
+        path: outputFile,
+        format: 'A4',
+        margin: {
+          top: '10mm', // default is 0, units: mm, cm, in, px
+          right: '5mm', // default is 0, units: mm, cm, in, px
+          bottom: '10mm', // default is 0, units: mm, cm, in, px
+          left: '5mm', // default is 0, units: mm, cm, in, px
+        },
+      });
 
       await browser.close();
       server.close();
