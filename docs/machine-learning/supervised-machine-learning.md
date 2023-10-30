@@ -128,5 +128,3 @@ print(f'Accuracy: {accuracy * 100:.2f}%')
 - Online Course: Coursera’s Machine Learning Specialization
 
 ---
-
-This presentation provides a foundational understanding of supervised machine learning, and the practical example gives a glimpse into how these concepts are applied in real-world scenarios.
