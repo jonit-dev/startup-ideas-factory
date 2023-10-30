@@ -1,45 +1,46 @@
 import fs from 'fs';
-import markdownIt from 'markdown-it';
+import { glob } from 'glob';
+import MarkdownIt from 'markdown-it';
 import path from 'path';
 import puppeteer from 'puppeteer';
 
-const markdownConverter = markdownIt();
+async function convertMarkdownToPdf(inputFile: string, outputFile: string) {
+  const markdownContent = fs.readFileSync(inputFile, 'utf-8');
+  const md = new MarkdownIt();
+  const htmlContent = md.render(markdownContent);
 
-const readAndCombineMarkdownFiles = (folderPath: string): string => {
-  const files = fs.readdirSync(folderPath);
-  const markdownFiles = files.filter(file => file.endsWith('.md'));
-
-  let combinedMarkdown = '';
-  for (const file of markdownFiles) {
-    const content = fs.readFileSync(path.join(folderPath, file), 'utf-8');
-    combinedMarkdown += content + '\n\n';
-  }
-  return combinedMarkdown;
-};
-
-const convertToHTML = (markdownContent: string): string => {
-  return '<!DOCTYPE html><html><head><title>Markdown to PDF</title></head><body>' +
-         markdownConverter.render(markdownContent) +
-         '</body></html>';
-};
-
-const exportToPDF = async (htmlContent: string, outputPath: string) => {
-  const browser = await puppeteer.launch({
-    headless: true
-  });
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
+
   await page.setContent(htmlContent);
-  await page.pdf({ path: outputPath, format: 'A4' });
+  await page.pdf({ path: outputFile, format: 'A4' });
+
   await browser.close();
-};
+}
 
-const main = async () => {
-  const folderPath = './docs';
-  const outputPath = './output.pdf';
+async function convertAllMarkdownsInDirectory(directory: string) {
+  // Use glob to get all markdown files in directory and subdirectories
+  const files = await glob('**/*.md', { cwd: directory, absolute: true });
 
-  const combinedMarkdown = readAndCombineMarkdownFiles(folderPath);
-  const htmlContent = convertToHTML(combinedMarkdown);
-  await exportToPDF(htmlContent, outputPath);
-};
+  for (const filePath of files) {
+    const outputFilePath = filePath
+      .replace('.md', '.pdf')
+      .replace(directory, 'pdfs');
+    const outputDir = path.dirname(outputFilePath);
 
-main().catch(console.error);
+    // Create output directory if it doesn't exist
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    try {
+      await convertMarkdownToPdf(filePath, outputFilePath);
+      console.log(`PDF generated: ${outputFilePath}`);
+    } catch (err) {
+      console.error(`Error generating PDF for ${filePath}: ${err}`);
+    }
+  }
+}
+
+// Start the conversion for all markdown files in the /docs folder
+convertAllMarkdownsInDirectory(path.resolve(__dirname, 'docs'));
