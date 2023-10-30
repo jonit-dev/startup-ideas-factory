@@ -9,4 +9,6 @@ import { MarkdownConverter } from './MarkdownConverter';
   await mdConverter.convertAllMarkdownsInDirectory(
     path.resolve(__dirname, '..', 'docs')
   );
+
+  await mdConverter.mergePdfsInDirectory('pdfs', './pdfs/output.pdf');
 })();

@@ -5,6 +5,7 @@ import { glob } from 'glob';
 import MarkdownIt from 'markdown-it';
 import { AddressInfo } from 'net';
 import path from 'path';
+import PDFMerger from 'pdf-merger-js';
 import puppeteer from 'puppeteer';
 
 export class MarkdownConverter {
@@ -63,6 +64,27 @@ export class MarkdownConverter {
     }
   }
 
+  public async mergePdfsInDirectory(directory: string, outputFile: string) {
+    try {
+      const merger = new PDFMerger();
+      const pdfFiles = (await this.getPdfFiles(directory)).reverse();
+
+      for (const pdfFile of pdfFiles) {
+        await merger.add(pdfFile);
+      }
+
+      await merger.save(outputFile); // Save merged PDFs to the output file
+      console.log(`PDFs merged successfully: ${outputFile}`);
+    } catch (err) {
+      console.error(`Error merging PDFs in directory ${directory}: ${err}`);
+    }
+  }
+
+  private async getPdfFiles(directory: string): Promise<string[]> {
+    const pdfs = await glob('**/*.pdf', { cwd: directory, absolute: true });
+
+    return pdfs;
+  }
   private getStyledHtmlContent(markdownContent) {
     const md = new MarkdownIt({ html: true });
     const htmlContent = md.render(markdownContent);
