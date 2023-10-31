@@ -1,4 +1,4 @@
-## Supervised Machine Learning: Bridging Theory and Practice
+# Supervised Machine Learning: Bridging Theory and Practice
 
 ---
 
@@ -77,7 +77,11 @@ It's how ML systems learn how to combine input to produce useful predictions on 
 
 ---
 
-**Practical Example: Predicting House Prices**
+### Workflow steps
+
+<img src="../../assets/2-supervised-learning-workflow.png" width="800">
+
+### Practical Example: Predicting House Prices
 
 We'll use a simplified version of a real-world problem to illustrate supervised learning using a linear regression model.
 
@@ -113,12 +117,12 @@ print(f'Accuracy: {accuracy * 100:.2f}%')
 
 ### Regression x Classification
 
-- A regression model predicts continuous values. For example, regression models make predictions that answer questions like the following:
+- A **regression model predicts continuous values**. For example, regression models make predictions that answer questions like the following:
 
   - What is the value of a house in California?
   - What is the probability that a user will click on this ad?
 
-- A classification model predicts discrete values. For example, classification models make predictions that answer questions like the following:
+- A **classification model predicts discrete values**. For example, classification models make predictions that answer questions like the following:
   - Is a given email message spam or not spam?
   - Is this an image of a dog, a cat, or a hamster?
 

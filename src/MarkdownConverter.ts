@@ -36,6 +36,10 @@ export class MarkdownConverter {
         '/assets',
         express.static(path.join(__dirname, '..', 'docs', 'assets')),
       );
+      app.use(
+        '/styles',
+        express.static(path.join(__dirname, '..', 'docs', 'styles')),
+      );
       app.get('/', (req, res) => res.sendFile(tempHtmlFile));
 
       const server = app.listen(0);
@@ -103,7 +107,7 @@ export class MarkdownConverter {
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="/styles/index.css">
       </head>
       <body>
         ${htmlContent}
