@@ -55,7 +55,7 @@ Teaching a computer to play chess. The algorithm tries different moves, loses or
 
 ### 1. Features
 
-Features are measurable attributes. In an email spam filter, features could be the frequency of specific words or the number of links in an email.
+Features are **measurable** attributes (it can't be vague! Must be OBJECTIVE). In an email spam filter, features could be the **frequency of specific words or the number of links in an email**.
 
 ### 2. Model
 

@@ -34,7 +34,7 @@ export class MarkdownConverter {
       const app = express();
       app.use(
         '/assets',
-        express.static(path.join(__dirname, '..', 'docs', 'assets'))
+        express.static(path.join(__dirname, '..', 'docs', 'assets')),
       );
       app.get('/', (req, res) => res.sendFile(tempHtmlFile));
 
@@ -67,13 +67,20 @@ export class MarkdownConverter {
   public async mergePdfsInDirectory(directory: string, outputFile: string) {
     try {
       const merger = new PDFMerger();
-      const pdfFiles = (await this.getPdfFiles(directory)).reverse();
+      let pdfFiles = await this.getPdfFiles(directory);
+
+      // Sort the pdfFiles array by the numeric prefix
+      pdfFiles = pdfFiles.sort((a, b) => {
+        const numA = parseInt(a.match(/\/(\d+)-/)?.[1] ?? '', 10);
+        const numB = parseInt(b.match(/\/(\d+)-/)?.[1] ?? '', 10);
+        return numA - numB;
+      });
 
       for (const pdfFile of pdfFiles) {
         await merger.add(pdfFile);
       }
 
-      await merger.save(outputFile); // Save merged PDFs to the output file
+      await merger.save(outputFile);
       console.log(`PDFs merged successfully: ${outputFile}`);
     } catch (err) {
       console.error(`Error merging PDFs in directory ${directory}: ${err}`);
@@ -81,7 +88,9 @@ export class MarkdownConverter {
   }
 
   private async getPdfFiles(directory: string): Promise<string[]> {
-    const pdfs = await glob('**/*.pdf', { cwd: directory, absolute: true });
+    let pdfs = await glob('**/*.pdf', { cwd: directory, absolute: true });
+
+    pdfs = pdfs.filter((pdf) => pdf.includes('output.pdf') !== true);
 
     return pdfs;
   }

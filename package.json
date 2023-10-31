@@ -18,6 +18,7 @@
     "@types/markdown-it": "^13.0.5",
     "@types/node": "^20.8.9",
     "@types/puppeteer": "^7.0.4",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
   "dependencies": {
