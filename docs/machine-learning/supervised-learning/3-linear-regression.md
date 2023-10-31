@@ -24,7 +24,7 @@ The equation of a line is given by \( y = mx + c \), where:
 - \( c \) is the y-intercept (value of \( y \) when \( x = 0 \))
 
 In multiple linear regression, this extends to:
-![Alt text](../assets/linear-eq-1.png)
+![Alt text](../../assets/linear-eq-1.png)
 
 ---
 
@@ -32,8 +32,7 @@ In multiple linear regression, this extends to:
 
 The cost function measures how well the line fits the data points. The goal is to minimize this function. A common cost function is Mean Squared Error (MSE).
 
-![Alt text](../assets/linear-reg-cost-function.png)
----
+## ![Alt text](../../assets/linear-reg-cost-function.png)
 
 ### Gradient Descent (important)
 
@@ -71,9 +70,9 @@ In this example, the model learns the best-fit line based on the `X` and `y` dat
 
 ## Summary of Key Takeaways
 
-1. **What is Regression**: Regression aims to predict the target variable based on predictor variables.  
-2. **Equation of a Line**: \( y = mx + c \) represents a line in simple linear regression.  
-3. **Cost Function**: The goal is to minimize this function (usually MSE) to find the best-fit line.  
+1. **What is Regression**: Regression aims to predict the target variable based on predictor variables.
+2. **Equation of a Line**: \( y = mx + c \) represents a line in simple linear regression.
+3. **Cost Function**: The goal is to minimize this function (usually MSE) to find the best-fit line.
 4. **Gradient Descent**: An optimization algorithm to minimize the cost function.
 
 ---
