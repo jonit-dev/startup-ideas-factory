@@ -81,6 +81,7 @@ export class MarkdownConverter {
       }
 
       await merger.save(outputFile);
+
       console.log(`PDFs merged successfully: ${outputFile}`);
     } catch (err) {
       console.error(`Error merging PDFs in directory ${directory}: ${err}`);
