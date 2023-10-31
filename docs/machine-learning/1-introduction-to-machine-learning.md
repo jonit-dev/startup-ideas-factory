@@ -35,15 +35,19 @@ model = LinearRegression().fit(X, y)
 
 ### 2. Unsupervised Learning
 
-The algorithm is given data without explicit instructions on what to do with it. It finds structure by itself.
+The algorithm is given data without explicit instructions on what to do with it. It finds structure by itself. Its learning focuses on **finding patterns or groupings in unlabeled data**.
 
 #### Example
 
-Think about customer segmentation in marketing. An algorithm can divide customers into groups based on purchasing behavior.
+- Think about customer segmentation in marketing. An algorithm can divide customers into groups based on purchasing behavior.
+- **K-Means Clustering**:
+  - Suppose you are an e-commerce site owner and want to understand the behavior of visitors to your website so you can improve their experience. You have a bunch of data like time spent on website, pages visited, and location but no labels.
 
 ### 3. Reinforcement Learning
 
 The algorithm learns by interacting with an environment and receiving rewards or penalties based on its actions.
+
+- For example, [AlfaGo](https://www.youtube.com/watch?v=WXuK6gekU1Y&pp=ygUTYWxwaGFnbyBkb2N1bWVudGFyeQ%3D%3D), uses both Deep Learning and Reinforcement Learning
 
 #### Example
 
@@ -59,15 +63,15 @@ Features are **measurable** attributes (it can't be vague! Must be OBJECTIVE). I
 
 ### 2. Model
 
-A model is a mathematical representation of a real-world process based on input data. It is what you build during the training phase and use for prediction.
+A model is a mathematical representation of a real-world process based on input data. It is what you build during the **training phase** and use for **prediction**.
 
 ### 3. Training
 
-Training is the process where the machine learning algorithm learns from the data. The model adjusts its internal parameters to minimize error and improve accuracy.
+Training is the **process where the machine learning algorithm learns from the data**. The model adjusts its internal parameters to minimize error and improve accuracy.
 
 ### 4. Testing
 
-Once a model is trained, it needs to be tested on unseen data to assess its performance.
+Once a model is trained, it **needs to be tested on unseen data** to assess its **performance**.
 
 ### 5. Overfitting and Underfitting
 
