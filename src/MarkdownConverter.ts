@@ -26,7 +26,8 @@ export class MarkdownConverter {
 
   private async convertMarkdownToPdf(inputFile, outputFile) {
     try {
-      const markdownContent = await fs.readFile(inputFile, 'utf-8');
+      let markdownContent = await fs.readFile(inputFile, 'utf-8');
+
       const styledHtmlContent = this.getStyledHtmlContent(markdownContent);
       const tempHtmlFile = path.join(__dirname, 'temp.html');
       await fs.writeFile(tempHtmlFile, styledHtmlContent);
