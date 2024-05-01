@@ -1,5 +1,5 @@
 Arguments: 
-  /home/jonit/.nvm/versions/node/v18.18.2/bin/node /mnt/c/Users/joao/AppData/Roaming/npm/node_modules/yarn/bin/yarn.js install
+  /home/jonit/.nvm/versions/node/v18.18.2/bin/node /mnt/c/Users/joao/AppData/Roaming/npm/node_modules/yarn/bin/yarn.js set version 4
 
 PATH: 
   /home/jonit/.vscode-server/bin/e170252f762678dec6ca2cc69aba1570769a5d39/bin/remote-cli:/home/jonit/.nvm/versions/node/v18.18.2/bin:/home/jonit/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/nodejs/:/mnt/c/Users/joao/.cargo/bin:/mnt/c/Users/joao/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/joao/.dotnet/tools:/mnt/c/Users/joao/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/joao/AppData/Roaming/npm:/usr/lib/jvm/java-17-openjdk-amd64/bin:/usr/lib/android-sdk/cmdline-tools/cmdline-tools/bin:/usr/lib/android-sdk/platform-tools:/usr/lib/jvm/java-17-openjdk-amd64/bin:/usr/lib/android-sdk/cmdline-tools/cmdline-tools/bin:/usr/lib/android-sdk/platform-tools
@@ -14,12 +14,12 @@ Platform:
   linux x64
 
 Trace: 
-  SyntaxError: /home/jonit/personal-projects/documentation-builder-pdf/package.json: Unexpected token } in JSON at position 738
-      at JSON.parse (<anonymous>)
-      at /mnt/c/Users/joao/AppData/Roaming/npm/node_modules/yarn/lib/cli.js:1629:59
+  Error: Release not found: 4
+      at /mnt/c/Users/joao/AppData/Roaming/npm/node_modules/yarn/lib/cli.js:86358:17
       at Generator.next (<anonymous>)
       at step (/mnt/c/Users/joao/AppData/Roaming/npm/node_modules/yarn/lib/cli.js:310:30)
       at /mnt/c/Users/joao/AppData/Roaming/npm/node_modules/yarn/lib/cli.js:321:13
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
 
 npm manifest: 
   {
@@ -49,9 +49,10 @@ npm manifest:
     "dependencies": {
       "express": "^4.18.2",
       "glob": "^10.3.10",
+      "highlight.js": "^11.9.0",
       "markdown-it": "^13.0.2",
       "pdf-merger-js": "^4.3.0",
-      "puppeteer": "^21.4.1",
+      "puppeteer": "^21.4.1"
     }
   }
 
@@ -339,11 +340,6 @@ Lockfile:
     integrity sha512-H0TSyFNDMomMNJQBn8wFV5YC/2eJ+VXECwOadZJT554xP6cODZHPX3H9QMQECxvrgiSOP1pHjy1sMWQVYJOUOA==
     dependencies:
       debug "^4.3.4"
-  
-  ansi-regex@^4.1.0:
-    version "4.1.1"
-    resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-4.1.1.tgz#164daac87ab2d6f6db3a29875e2d1766582dabed"
-    integrity sha512-ILlv4k/3f6vfQ4OoP2AGvirOktlQ98ZEL1k9FaQjxa3L1abBgbuTDAdPOpvbGncC0BTVQrl+OM8xZGK6tWXt7g==
   
   ansi-regex@^5.0.1:
     version "5.0.1"
@@ -751,11 +747,6 @@ Lockfile:
     version "1.1.1"
     resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
     integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
-  
-  emoji-regex@^7.0.1:
-    version "7.0.3"
-    resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
-    integrity sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
   
   emoji-regex@^8.0.0:
     version "8.0.0"
@@ -1181,11 +1172,6 @@ Lockfile:
     version "2.1.1"
     resolved "https://registry.yarnpkg.com/is-extglob/-/is-extglob-2.1.1.tgz#a88c02535791f02ed37c76a1b9ea9773c833f8c2"
     integrity sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==
-  
-  is-fullwidth-code-point@^2.0.0:
-    version "2.0.0"
-    resolved "https://registry.yarnpkg.com/is-fullwidth-code-point/-/is-fullwidth-code-point-2.0.0.tgz#a3b30a5c4f199183167aaab93beefae3ddfb654f"
-    integrity sha512-VHskAKYM8RfSFXwee5t5cbN5PZeq1Wrh6qd5bkyiXIf6UQcN6w/A0eXM9r6t8d+GYOh+o6ZhiEnb88LN/Y8m2w==
   
   is-fullwidth-code-point@^3.0.0:
     version "3.0.0"
@@ -1851,15 +1837,6 @@ Lockfile:
       is-fullwidth-code-point "^3.0.0"
       strip-ansi "^6.0.1"
   
-  string-width@3.1.0:
-    version "3.1.0"
-    resolved "https://registry.yarnpkg.com/string-width/-/string-width-3.1.0.tgz#22767be21b62af1081574306f69ac51b62203961"
-    integrity sha512-vafcv6KjVZKSgz06oM/H6GDBrAtz8vdhQakGjFIvNrHA6y3HCF1CInLy+QLq8dTJPQ1b+KDUqDFctkdRW44e1w==
-    dependencies:
-      emoji-regex "^7.0.1"
-      is-fullwidth-code-point "^2.0.0"
-      strip-ansi "^5.1.0"
-  
   string-width@^5.0.1, string-width@^5.1.2:
     version "5.1.2"
     resolved "https://registry.yarnpkg.com/string-width/-/string-width-5.1.2.tgz#14f8daec6d81e7221d2a357e668cab73bdbca794"
@@ -1876,13 +1853,6 @@ Lockfile:
     integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
     dependencies:
       ansi-regex "^5.0.1"
-  
-  strip-ansi@^5.1.0:
-    version "5.2.0"
-    resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-5.2.0.tgz#8c9a536feb6afc962bdfa5b104a5091c1ad9c0ae"
-    integrity sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
-    dependencies:
-      ansi-regex "^4.1.0"
   
   strip-ansi@^7.0.1:
     version "7.1.0"

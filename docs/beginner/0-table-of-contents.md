@@ -2,6 +2,10 @@
 
 Welcome to the Beginner Go Course! This course is designed for experienced software engineers new to the Go programming language. Below is the outline of the course contents.
 
+<p align="center">
+  <img src="../assets/golang.png" alt="Machine learning text" width="600" />
+</p>
+
 ## Table of Contents
 
 1. **Introduction to Go**

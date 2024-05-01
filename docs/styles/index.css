@@ -1,79 +1,86 @@
- /* Root Element */
- html {
-   font-size: 16px;
-   line-height: 1.5;
-   color: #333;
- }
+/* Root Element */
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #515151;
+  /* Lighter color for better visibility on a dark background */
+}
 
- /* Body */
- body {
-   font-family: 'Roboto', sans-serif;
-   margin: 0;
- }
+/* Body */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  /* Ensuring the background is uniformly dark */
+  color: #515151;
+  /* Ensuring text color is light across the body */
+}
 
- /* Headings */
- h1,
- h2,
- h3,
- h4,
- h5,
- h6 {
-   font-weight: bold;
-   margin-bottom: 16px;
- }
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #212121;
+  /* Optional: Ensuring headings are clearly visible */
+}
 
- h1 {
-   font-size: 2em;
- }
+/* Paragraphs, Lists, and General Text Content */
+p,
+ul,
+ol {
+  margin-bottom: 16px;
+  color: #313131;
+  /* Light grey color for readability */
+}
 
- h2 {
-   font-size: 1.5em;
- }
+/* Links */
+a {
+  color: #80d8ff;
+  /* Bright color for links to stand out on dark background */
+}
 
- /* Paragraphs */
- p {
-   margin-bottom: 16px;
- }
+a:hover {
+  text-decoration: underline;
+}
 
- /* Lists */
- ul,
- ol {
-   margin-bottom: 16px;
-   padding-left: 40px;
- }
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  background-color: #282a36;
+  /* Dark background for tables */
+}
 
- /* Links */
- a {
-   color: #007bff;
-   text-decoration: none;
- }
+th,
+td {
+  border: 1px solid #666;
+  /* Softer border color */
+  padding: 8px;
+  text-align: left;
+  color: #515151;
+  /* Text color for table content */
+}
 
- a:hover {
-   text-decoration: underline;
- }
+/* Code Blocks */
+pre,
+code {
+  font-family: 'Courier New', monospace;
 
- /* Tables */
- table {
-   width: 100%;
-   border-collapse: collapse;
-   margin-bottom: 16px;
- }
 
- th,
- td {
-   border: 1px solid #ccc;
-   padding: 8px;
-   text-align: left;
- }
+  /* Ensuring text color consistency */
+  padding: 8px;
+  border-radius: 4px;
+}
 
- /* Code Blocks */
- pre,
- code {
-   font-family: 'Courier New', monospace;
-   background-color: #f5f5f5;
-   padding: 8px;
-   border-radius: 4px;
- }
+/* Additional Styles */
+/* Add any other styles you need, ensuring they are compatible with a dark theme */
 
- /* Additional Styles */
- /* Add any other styles you need */
+
+.hljs {
+  background-color: #303030 !important;
+}
