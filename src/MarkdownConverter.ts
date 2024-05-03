@@ -11,16 +11,22 @@ import puppeteer from 'puppeteer';
 import hljs from 'highlight.js';
 
 export class MarkdownConverter {
-  public async convertAllMarkdownsInDirectory(directory) {
-    const files = await glob('**/*.md', { cwd: directory, absolute: true });
+  async convertAllMarkdownsInDirectory(directory: string): Promise<void> {
+    let files = await glob('**/*.md', { cwd: directory, absolute: true });
+
+    // Improved sorting function that handles chapters and sub-chapters correctly
+    files = this.sortFiles(files, 'md');
+
+    console.log(files);
+
     for (const filePath of files) {
       const outputFilePath = filePath
         .replace('.md', '.pdf')
         .replace(directory, 'pdfs');
       const outputDir = path.dirname(outputFilePath);
+
       if (!existsSync(outputDir)) {
-        // Use synchronous existsSync method
-        mkdirSync(outputDir, { recursive: true }); // Use synchronous mkdirSync method
+        mkdirSync(outputDir, { recursive: true });
       }
       await this.convertMarkdownToPdf(filePath, outputFilePath);
     }
@@ -80,11 +86,9 @@ export class MarkdownConverter {
       let pdfFiles = await this.getPdfFiles(directory);
 
       // Sort the pdfFiles array by the numeric prefix
-      pdfFiles = pdfFiles.sort((a, b) => {
-        const numA = parseInt(a.match(/\/(\d+)-/)?.[1] ?? '', 10);
-        const numB = parseInt(b.match(/\/(\d+)-/)?.[1] ?? '', 10);
-        return numA - numB;
-      });
+      pdfFiles = this.sortFiles(pdfFiles, 'pdf');
+
+      console.log(pdfFiles);
 
       for (const pdfFile of pdfFiles) {
         await merger.add(pdfFile);
@@ -96,6 +100,24 @@ export class MarkdownConverter {
     } catch (err) {
       console.error(`Error merging PDFs in directory ${directory}: ${err}`);
     }
+  }
+
+  private sortFiles(files: string[], fileType: 'md' | 'pdf'): string[] {
+    return files.sort((a, b) => {
+      const chapterRegex = new RegExp(`(\\d+)(\\.\\d+)?-[^/]*\\.${fileType}$`);
+
+      const matchA = a.match(chapterRegex);
+      const matchB = b.match(chapterRegex);
+      const chapterA = parseInt(matchA ? matchA[1] : '0');
+      const chapterB = parseInt(matchB ? matchB[1] : '0');
+      const subChapterA = parseFloat(matchA ? matchA[2] || '.0' : '.0');
+      const subChapterB = parseFloat(matchB ? matchB[2] || '.0' : '.0');
+
+      // First compare chapters, then sub-chapters if chapters are equal
+      return chapterA !== chapterB
+        ? chapterA - chapterB
+        : subChapterA - subChapterB;
+    });
   }
 
   private async getPdfFiles(directory: string): Promise<string[]> {
