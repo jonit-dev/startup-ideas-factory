@@ -4,7 +4,7 @@ import { MarkdownConverter } from './MarkdownConverter';
 
 const DOCS_DIR = path.resolve(__dirname, '../docs');
 const PDFS_DIR = path.resolve(__dirname, '../pdfs');
-const OUTPUT_DIR = path.resolve(__dirname, './output');
+const OUTPUT_DIR = path.resolve(__dirname, '../output');
 
 const ensureDirectoryExists = (dir: string): void => {
   if (!fs.existsSync(dir)) {
