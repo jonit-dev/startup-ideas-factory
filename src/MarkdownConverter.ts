@@ -102,19 +102,25 @@ export class MarkdownConverter {
 
   private sortFiles(files: string[], fileType: 'md' | 'pdf'): string[] {
     return files.sort((a, b) => {
-      const chapterRegex = new RegExp(`(\\d+)(\\.\\d+)?-[^/]*\\.${fileType}$`);
+      const extractNumbers = (filename: string): number[] => {
+        const baseName = path.basename(filename, `.${fileType}`);
+        const numberParts = baseName
+          .split(/[-.]/)
+          .filter((part) => /^\d+$/.test(part));
+        return numberParts.map((num) => parseInt(num, 10));
+      };
 
-      const matchA = a.match(chapterRegex);
-      const matchB = b.match(chapterRegex);
-      const chapterA = parseInt(matchA ? matchA[1] : '0');
-      const chapterB = parseInt(matchB ? matchB[1] : '0');
-      const subChapterA = parseFloat(matchA ? matchA[2] || '.0' : '.0');
-      const subChapterB = parseFloat(matchB ? matchB[2] || '.0' : '.0');
+      const aNumbers = extractNumbers(a);
+      const bNumbers = extractNumbers(b);
 
-      // First compare chapters, then sub-chapters if chapters are equal
-      return chapterA !== chapterB
-        ? chapterA - chapterB
-        : subChapterA - subChapterB;
+      for (let i = 0; i < Math.max(aNumbers.length, bNumbers.length); i++) {
+        if ((aNumbers[i] || 0) !== (bNumbers[i] || 0)) {
+          return (aNumbers[i] || 0) - (bNumbers[i] || 0);
+        }
+      }
+
+      // If all number parts are equal, compare the whole strings to maintain stability
+      return a.localeCompare(b);
     });
   }
 
