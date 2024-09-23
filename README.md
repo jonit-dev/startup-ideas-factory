@@ -1,7 +1,7 @@
 ## Learning Notebook
 
 ### Pre-requisites
- 
+
 bash script
 
 ```bash
@@ -33,4 +33,7 @@ sudo apt-get install -y \
     libatk1.0-0 \
     libxkbcommon0 \
     libxkbcommon-x11-0
+
+
+sudo apt install fonts-noto-color-emoji
 ```

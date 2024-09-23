@@ -2,13 +2,13 @@ import express from 'express';
 import { existsSync, mkdirSync } from 'fs'; // Import synchronous methods from 'fs'
 import fs from 'fs/promises'; // Import promises API of fs for async operations
 import { glob } from 'glob';
-import MarkdownIt from 'markdown-it';
+import hljs from 'highlight.js';
+import markdownit from 'markdown-it';
+import { full as emoji } from 'markdown-it-emoji';
 import { AddressInfo } from 'net';
 import path from 'path';
 import PDFMerger from 'pdf-merger-js';
 import puppeteer from 'puppeteer';
-
-import hljs from 'highlight.js';
 
 export class MarkdownConverter {
   async convertAllMarkdownsInDirectory(directory: string): Promise<void> {
@@ -132,9 +132,10 @@ export class MarkdownConverter {
     return pdfs;
   }
   private getStyledHtmlContent(markdownContent: string): string {
-    const md = new MarkdownIt({
-      html: true, // Allow HTML tags in the source
-    });
+    const md = markdownit({
+      html: true,
+      linkify: true,
+    }).use(emoji);
 
     // Ensure we are using the styled markdown which contains highlighted HTML
     let htmlContent = md.render(markdownContent);
@@ -147,9 +148,16 @@ export class MarkdownConverter {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go Error Handling Examples</title>
-    <!-- Include only the dark theme CSS for Highlight.js -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/dark.min.css">
+    <title>Output</title>
+
+       <!-- Additional styles and fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/styles/index.css"> 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Color+Emoji">
+
+    
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
     <script src="
 https://cdn.jsdelivr.net/npm/highlightjs-solidity@2.0.6/dist/solidity.min.js
@@ -159,12 +167,7 @@ https://cdn.jsdelivr.net/npm/highlightjs-solidity@2.0.6/dist/solidity.min.js
 
     </script>
 
-    <!-- Additional styles and fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/styles/index.css">
-    <link rel="stylesheet" type="text/css" href="/styles/atom-one-dark.min.css">
+ 
 </head>
 <body>
     <!-- Your HTML content goes here -->

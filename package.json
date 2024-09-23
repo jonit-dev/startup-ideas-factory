@@ -30,6 +30,7 @@
     "highlightjs-solidity": "^2.0.6",
     "i": "^0.3.7",
     "markdown-it": "^13.0.2",
+    "markdown-it-emoji": "^3.0.0",
     "pdf-merger-js": "^4.3.0",
     "puppeteer": "^21.4.1"
   },

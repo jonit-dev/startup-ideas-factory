@@ -8,7 +8,11 @@ html {
 
 /* Body */
 body {
-  font-family: 'Roboto', sans-serif;
+  body {
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+    /* Added Apple Color Emoji */
+  }
+
   margin: 0;
   /* Ensuring the background is uniformly dark */
   color: #515151;
@@ -47,14 +51,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Tables */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
-  background-color: #282a36;
-  /* Dark background for tables */
-}
+
 
 th,
 td {
