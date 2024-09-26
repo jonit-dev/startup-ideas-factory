@@ -1,5 +1,3 @@
-Here’s your refactored markdown without numbering:
-
 # **Customer Report for Omnilytics: User Personas and User Journey Maps**
 
 ## **User Personas**

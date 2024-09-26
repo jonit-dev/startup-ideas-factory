@@ -1,83 +1,106 @@
 /* Root Element */
 html {
-  font-size: 16px;
-  line-height: 1.5;
-  color: #515151;
-  /* Lighter color for better visibility on a dark background */
+  font-size: 18px;
+  /* Base font size slightly reduced */
+}
+
+/* Headings with Golden Ratio */
+h1 {
+  font-size: 1.854rem;
+  /* Proportional to the 12px body */
+}
+
+h2 {
+  font-size: 1.382rem;
+  /* Golden Ratio applied to ensure hierarchy */
+}
+
+h3 {
+  font-size: 1.146rem;
+  /* Smaller heading for mid-level sections */
+}
+
+h4 {
+  font-size: 0.893rem;
+  /* Subheading size */
+}
+
+h5,
+h6 {
+  font-size: 0.75rem;
+  /* Smaller for minor headings */
 }
 
 /* Body */
 body {
-  body {
-    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
-    /* Added Apple Color Emoji */
-  }
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
 
+  color: #333333;
   margin: 0;
-  /* Ensuring the background is uniformly dark */
-  color: #515151;
-  /* Ensuring text color is light across the body */
+  padding: 16px;
+  line-height: 1.6;
+  /* Comfortable line height */
 }
 
-/* Headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: bold;
-  margin-bottom: 16px;
-  color: #212121;
-  /* Optional: Ensuring headings are clearly visible */
-}
-
-/* Paragraphs, Lists, and General Text Content */
+/* Paragraphs and general text */
 p,
 ul,
 ol {
+  font-size: 0.75rem;
+  /* Body text at 12px */
   margin-bottom: 16px;
-  color: #313131;
-  /* Light grey color for readability */
 }
 
 /* Links */
 a {
-  color: #80d8ff;
-  /* Bright color for links to stand out on dark background */
+  color: #007acc;
+  /* Soft blue for links */
+  text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
+  /* Underline on hover for interaction feedback */
 }
 
-
-
+/* Tables */
 th,
 td {
-  border: 1px solid #666;
-  /* Softer border color */
-  padding: 8px;
+  border: 1px solid #cccccc;
+  /* Lighter border color */
+  padding: 10px;
+  /* Adequate padding for readability */
   text-align: left;
-  color: #515151;
-  /* Text color for table content */
+  color: #333333;
 }
 
 /* Code Blocks */
 pre,
 code {
   font-family: 'Courier New', monospace;
+  color: #333333;
+  /* Consistent text color */
+  background-color: #f0f0f0;
+  /* Light background for code readability */
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  display: block;
+  white-space: pre-wrap;
+  /* Wrap long code lines */
+}
 
-
-  /* Ensuring text color consistency */
-  padding: 8px;
+/* Highlight.js code block */
+.hljs {
+  background-color: #f0f0f0 !important;
+  color: #333333 !important;
+  padding: 10px;
   border-radius: 4px;
 }
 
 /* Additional Styles */
-/* Add any other styles you need, ensuring they are compatible with a dark theme */
-
-
-.hljs {
-  background-color: #303030 !important;
+section,
+article {
+  margin-bottom: 32px;
+  /* More spacing for clear separation of sections */
 }
