@@ -7,6 +7,8 @@
 
 #### **2. Tailored AI-Powered Insights & Coaching**
 
+- **Know your business**: You can input business data information to Omnilytics, and the AI will know your business, so it can provide personalized, AI-driven recommendations and step-by-step coaching based on integrated business data and progress toward key objectives (OKRs).
+- **Custom knowledge base**: Omnilytics will learn about your business, your data, and your goals, so it can provide personalized, AI-driven recommendations and step-by-step coaching.
 - **Oracle focused on what matters**: Omnilytics is focused on helping startups achieve PMF, so it uses AI to provide personalized, AI-driven recommendations and step-by-step coaching based on integrated business data and progress toward key objectives (OKRs).
 - **Interactive AI Mentor:** Provide startups with personalized, AI-driven recommendations and step-by-step coaching based on integrated business data and progress toward key objectives.
 - **Know your team**: You can create your team member profile in Omnilytics, and the AI will know your team member's role, skills, and knowledge, so it can recommend the right person for the right task.
