@@ -31,8 +31,12 @@
     "i": "^0.3.7",
     "markdown-it": "^13.0.2",
     "markdown-it-emoji": "^3.0.0",
+    "markdown-it-mermaid": "^0.2.5",
+    "mermaid": "^11.6.0",
     "pdf-merger-js": "^4.3.0",
-    "puppeteer": "^21.4.1"
+    "puppeteer": "^21.4.1",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.8.0"
   },
   "packageManager": "yarn@1.22.19",
   "resolutions": {

@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import { MarkdownConverter } from './MarkdownConverter';
+import 'reflect-metadata';
+import { container } from 'tsyringe';
+import './markdown/container'; // Import container configuration
+import { MarkdownConverter } from './markdown/MarkdownConverter';
 
 const DOCS_DIR = path.resolve(__dirname, '../docs');
 const PDFS_DIR = path.resolve(__dirname, '../pdfs');
@@ -33,11 +36,9 @@ const cleanUpPdfs = (baseDir: string): void => {
   pdfs.forEach((pdf) => fs.unlinkSync(path.resolve(baseDir, pdf)));
 };
 
-const convertDirectory = async (
-  dir: string,
-  mdConverter: MarkdownConverter,
-): Promise<void> => {
+const convertDirectory = async (dir: string): Promise<void> => {
   const dirPath = path.resolve(DOCS_DIR, dir);
+  const mdConverter = container.resolve<MarkdownConverter>(MarkdownConverter);
   await mdConverter.convertAllMarkdownsInDirectory(dirPath);
   ensureDirectoryExists(OUTPUT_DIR); // Ensure the output directory exists
   await mdConverter.mergePdfsInDirectory(PDFS_DIR, `${OUTPUT_DIR}/${dir}.pdf`);
@@ -45,7 +46,6 @@ const convertDirectory = async (
 };
 
 const main = async () => {
-  const mdConverter = new MarkdownConverter();
   const directories = getDirectories(DOCS_DIR);
   const regex = new RegExp(process.argv[2]);
 
@@ -53,7 +53,7 @@ const main = async () => {
 
   for (const dir of directories) {
     if (regex.test(dir)) {
-      await convertDirectory(dir, mdConverter);
+      await convertDirectory(dir);
     }
   }
 };
