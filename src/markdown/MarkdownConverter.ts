@@ -36,12 +36,22 @@ export class MarkdownConverter {
     outputFile: string,
   ): Promise<void> {
     try {
+      console.log(`Converting ${inputFile} to PDF`);
+
       // Read the markdown file
       const markdownContent = await this.fileService.readFile(inputFile);
 
       // Convert markdown to HTML
       const htmlContent =
         this.markdownService.convertMarkdownToHtml(markdownContent);
+
+      // Log image tags in HTML
+      const imgTagRegex = /<img[^>]+src="([^"]+)"[^>]*>/g;
+      const imageTags = [...htmlContent.matchAll(imgTagRegex)];
+      console.log(
+        'Image tags in HTML content:',
+        imageTags.map((match) => ({ fullTag: match[0], src: match[1] })),
+      );
 
       // Get styled HTML document
       const styledHtmlContent =
@@ -50,6 +60,7 @@ export class MarkdownConverter {
       // Write HTML to a temporary file
       const tempHtmlFile = path.join(__dirname, '..', 'temp.html');
       await this.fileService.writeFile(tempHtmlFile, styledHtmlContent);
+      console.log(`Temporary HTML file created at: ${tempHtmlFile}`);
 
       // Generate PDF from HTML
       await this.pdfService.generatePdf(tempHtmlFile, outputFile);

@@ -15,6 +15,9 @@ export class MarkdownService {
       linkify: true,
     }).use(emoji);
 
+    // Process image paths before rendering
+    markdownContent = this.processImagePaths(markdownContent);
+
     // Ensure we are using the styled markdown which contains highlighted HTML
     let htmlContent = md.render(markdownContent);
     htmlContent = this.codeBlockService.transformCodeBlocks(htmlContent);
@@ -23,6 +26,50 @@ export class MarkdownService {
     htmlContent = this.processMermaidDiagrams(htmlContent);
 
     return htmlContent;
+  }
+
+  private processImagePaths(markdown: string): string {
+    // Log all image references found in Markdown
+    console.log(
+      'Original markdown before image processing:',
+      markdown.match(/!\[(.*?)\]\((.*?)\)/g),
+    );
+
+    // Transform all image paths to work with our Express server
+    // Handle all possible path formats including direct references to img/
+    const processed = markdown
+      // Handle ./img/file.png format
+      .replace(
+        /!\[(.*?)\]\((\.\/img\/(.*?))\)/g,
+        (match, alt, fullPath, imgPath) => {
+          console.log(
+            `Transforming ./img/ path: ${fullPath} -> /img/${imgPath}`,
+          );
+          return `![${alt}](/img/${imgPath})`;
+        },
+      )
+      // Handle img/file.png format
+      .replace(
+        /!\[(.*?)\]\((img\/(.*?))\)/g,
+        (match, alt, fullPath, imgPath) => {
+          console.log(`Transforming img/ path: ${fullPath} -> /img/${imgPath}`);
+          return `![${alt}](/img/${imgPath})`;
+        },
+      )
+      // Handle /img/file.png format (already correctly formatted but log for debugging)
+      .replace(
+        /!\[(.*?)\]\((\/img\/(.*?))\)/g,
+        (match, alt, fullPath, imgPath) => {
+          console.log(`Already correct path format: ${fullPath}`);
+          return match; // No change needed
+        },
+      );
+
+    console.log(
+      'Processed markdown after image transformation:',
+      processed.match(/!\[(.*?)\]\((?:\/img\/|img\/|\.\/img\/)(.*?)\)/g),
+    );
+    return processed;
   }
 
   private processMermaidDiagrams(html: string): string {
@@ -62,6 +109,20 @@ export class MarkdownService {
     <link rel="stylesheet" type="text/css" href="/styles/index.css"> 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Color+Emoji">
 
+    <style>
+      /* Responsive image styles */
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 1.5em auto;
+      }
+      /* Ensure content doesn't overflow container */
+      body {
+        overflow-x: hidden;
+        width: 100%;
+      }
+    </style>
     
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
     <script src="

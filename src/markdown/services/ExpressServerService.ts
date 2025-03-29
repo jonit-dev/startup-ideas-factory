@@ -19,6 +19,21 @@ export class ExpressServerService {
       '/styles',
       express.static(path.join(__dirname, '..', '..', '..', 'styles')),
     );
+    // Add static route for img directory
+    app.use(
+      '/img',
+      express.static(
+        path.join(
+          __dirname,
+          '..',
+          '..',
+          '..',
+          'docs',
+          'lean-product-playbook',
+          'img',
+        ),
+      ),
+    );
 
     // Set up route for the temp HTML file
     app.get('/', (req, res) => res.sendFile(tempHtmlFilePath));
