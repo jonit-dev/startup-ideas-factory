@@ -86,7 +86,7 @@ export class PdfService {
         format: 'A4',
         printBackground: true,
         margin: {
-          top: '10mm',
+          top: '5mm',
           right: '10mm',
           bottom: '10mm',
           left: '10mm',

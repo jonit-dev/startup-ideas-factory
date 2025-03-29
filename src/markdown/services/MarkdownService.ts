@@ -106,7 +106,7 @@ export class MarkdownService {
             color: #333;
             max-width: 800px;
             margin: 0 auto;
-            padding: 2em;
+            padding: 0.75em 2em 2em 2em;
             overflow-x: hidden;
             width: 100%;
           }
