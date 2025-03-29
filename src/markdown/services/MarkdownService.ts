@@ -83,68 +83,151 @@ export class MarkdownService {
       .replace(/&amp;/g, '&');
   }
 
-  getStyledHtmlDocument(htmlContent: string): string {
+  getStyledHtmlDocument(
+    htmlContent: string,
+    title: string = 'Document',
+  ): string {
+    // Process special content blocks for Mermaid diagrams
+    const processedHtml = this.processMermaidBlocks(htmlContent);
+
     return `
     <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Output</title>
-
-       <!-- Additional styles and fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/styles/index.css"> 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Color+Emoji">
-
-    <style>
-      /* Responsive image styles */
-      img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 1.5em auto;
-      }
-      /* Ensure content doesn't overflow container */
-      body {
-        overflow-x: hidden;
-        width: 100%;
-      }
-    </style>
-    
-    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
-    <script src="
-https://cdn.jsdelivr.net/npm/highlightjs-solidity@2.0.6/dist/solidity.min.js
-"></script>
-    <script>
-    hljs.highlightAll();
-    </script>
-
-    <!-- Mermaid script -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.4.0/dist/mermaid.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        mermaid.initialize({ 
-          startOnLoad: false,
-          securityLevel: 'loose',
-          theme: 'default'
-        });
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>${title}</title>
+        <!-- Prevent favicon requests -->
+        <link rel="icon" href="data:,">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+        <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2em;
+            overflow-x: hidden;
+            width: 100%;
+          }
+          img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5em auto;
+          }
+          h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+          }
+          code {
+            background-color: #f8f9fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+          }
+          pre {
+            background-color: #f8f9fa;
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+          }
+          blockquote {
+            border-left: 4px solid #dfe2e5;
+            margin: 0;
+            padding-left: 1em;
+            color: #6a737d;
+          }
+          table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+          }
+          th, td {
+            border: 1px solid #dfe2e5;
+            padding: 0.5em;
+            text-align: left;
+          }
+          th {
+            background-color: #f6f8fa;
+          }
+          ul, ol {
+            padding-left: 2em;
+          }
+          a {
+            color: #0366d6;
+            text-decoration: none;
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+          .mermaid {
+            margin: 1.5em 0;
+            text-align: center;
+          }
+        </style>
+      </head>
+      <body>
+        ${processedHtml}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js"></script>
         
-        // Initialize mermaid diagrams after page loads
-        setTimeout(() => {
-          mermaid.run();
-        }, 1000);
-      });
-    </script>
- 
-</head>
-<body>
-    <!-- Your HTML content goes here -->
-    ${htmlContent}
-</body>
-</html>
+        <!-- Mermaid script -->
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10.4.0/dist/mermaid.min.js"></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            mermaid.initialize({ 
+              startOnLoad: true,
+              securityLevel: 'loose',
+              theme: 'default',
+              logLevel: 'error',
+              fontFamily: "'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif",
+              flowchart: {
+                htmlLabels: true,
+                curve: 'linear'
+              }
+            });
+            
+            // Give ample time for the page to load before rendering diagrams
+            setTimeout(() => {
+              try {
+                // Find all Mermaid diagram blocks and initialize them
+                const mermaidDivs = document.querySelectorAll('.mermaid');
+                console.log('Found ' + mermaidDivs.length + ' Mermaid diagrams');
+                
+                // Run mermaid with a 3 second timeout to ensure everything is loaded
+                mermaid.run();
+              } catch (e) {
+                console.error('Error initializing Mermaid:', e);
+              }
+            }, 3000);
+          });
+        </script>
+      </body>
+    </html>
     `;
+  }
+
+  private processMermaidBlocks(html: string): string {
+    // Find markdown code blocks with mermaid and replace them with proper mermaid div blocks
+    const mermaidBlockRegex =
+      /<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g;
+
+    return html.replace(mermaidBlockRegex, (match, codeContent) => {
+      // Decode HTML entities
+      const decodedContent = codeContent
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'");
+
+      return `<div class="mermaid">${decodedContent.trim()}</div>`;
+    });
   }
 }

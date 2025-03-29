@@ -10,16 +10,17 @@ export class ExpressServerService {
   ): Promise<{ server: any; port: number }> {
     const app = express();
 
-    // Set up static file serving
+    // Set up static file serving for assets
     app.use(
       '/assets',
       express.static(path.join(__dirname, '..', '..', '..', 'docs', 'assets')),
     );
+
+    // Set up static file serving for images from both locations
     app.use(
-      '/styles',
-      express.static(path.join(__dirname, '..', '..', '..', 'styles')),
+      '/img',
+      express.static(path.join(__dirname, '..', '..', '..', 'docs', 'img')),
     );
-    // Add static route for img directory
     app.use(
       '/img',
       express.static(
