@@ -1,6 +1,7 @@
 import PDFMerger from 'pdf-merger-js';
 import puppeteer from 'puppeteer';
 import { inject, injectable } from 'tsyringe';
+import { LoggerService } from '../../services/LoggerService';
 import { ExpressServerService } from './ExpressServerService';
 import { FileService } from './FileService';
 
@@ -9,6 +10,7 @@ export class PdfService {
   constructor(
     @inject(FileService) private fileService: FileService,
     @inject(ExpressServerService) private expressService: ExpressServerService,
+    @inject(LoggerService) private logger: LoggerService,
   ) {}
 
   async generatePdf(
@@ -29,24 +31,25 @@ export class PdfService {
       page.on('request', (request) => {
         const url = request.url();
         pendingRequests.add(url);
-        console.log(`Network request: ${url}`);
+        this.logger.debug(`Network request: ${url}`);
       });
 
       page.on('requestfailed', (request) => {
         const url = request.url();
         pendingRequests.delete(url);
-        console.log(`Failed request: ${url} - ${request.failure()?.errorText}`);
+        this.logger.error(`Failed to load resource: ${url}`);
       });
 
       page.on('requestfinished', (request) => {
         const url = request.url();
         pendingRequests.delete(url);
-        console.log(`Finished request: ${url}`);
       });
 
       // Log console messages from the browser
       page.on('console', (msg) => {
-        console.log(`Browser console: ${msg.text()}`);
+        if (msg.type() === 'error') {
+          this.logger.error(`Browser error: ${msg.text()}`);
+        }
       });
 
       await page.goto(`http://localhost:${port}`, {
@@ -54,7 +57,7 @@ export class PdfService {
         timeout: 60000, // Increase timeout to 60 seconds
       });
 
-      // Extract and log the actual img tags from the rendered page
+      // Extract the actual img tags from the rendered page
       const imageTags = await page.evaluate(() => {
         const images = Array.from(document.querySelectorAll('img'));
         return images.map((img) => ({
@@ -62,15 +65,9 @@ export class PdfService {
           alt: img.alt,
         }));
       });
-      console.log(
-        'Image tags found in HTML:',
-        JSON.stringify(imageTags, null, 2),
-      );
 
       // Wait for all images to load
       if (imageTags.length > 0) {
-        console.log('Waiting for images to load...');
-        // Wait for all image elements to load or fail
         await page.evaluate(() => {
           return new Promise((resolve) => {
             // Check if all images are complete
@@ -112,7 +109,6 @@ export class PdfService {
             setTimeout(() => resolve(true), 5000);
           });
         });
-        console.log('All images loaded or timed out');
       }
 
       await page.pdf({
@@ -133,9 +129,9 @@ export class PdfService {
       // Cleanup
       await browser.close();
       server.close();
-      console.log(`PDF generated: ${outputFilePath}`);
+      this.logger.info(`PDF generated: ${outputFilePath}`);
     } catch (err) {
-      console.error(`Error generating PDF for ${htmlFilePath}: ${err}`);
+      this.logger.error(`Error generating PDF for ${htmlFilePath}: ${err}`);
     }
   }
 
@@ -147,16 +143,14 @@ export class PdfService {
       // Sort the pdfFiles array by the numeric prefix
       pdfFiles = this.fileService.sortFiles(pdfFiles, 'pdf');
 
-      console.log(pdfFiles);
-
       for (const pdfFile of pdfFiles) {
         await merger.add(pdfFile);
       }
 
       await merger.save(outputFile);
-      console.log(`PDFs merged successfully: ${outputFile}`);
+      this.logger.info(`PDFs merged successfully: ${outputFile}`);
     } catch (err) {
-      console.error(`Error merging PDFs in directory ${directory}: ${err}`);
+      this.logger.error(`Error merging PDFs in directory ${directory}: ${err}`);
     }
   }
 }

@@ -6,3 +6,5 @@ output
 pdfs
 
 dist
+
+.env

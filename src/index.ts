@@ -2,8 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import 'reflect-metadata';
 import { container } from 'tsyringe';
+import './config/env'; // Load environment variables first
 import './markdown/container'; // Import container configuration
 import { MarkdownConverter } from './markdown/MarkdownConverter';
+import { LoggerService } from './services/LoggerService';
 
 const DOCS_DIR = path.resolve(__dirname, '../docs');
 const PDFS_DIR = path.resolve(__dirname, '../pdfs');
@@ -46,10 +48,11 @@ const convertDirectory = async (dir: string): Promise<void> => {
 };
 
 const main = async () => {
+  const logger = container.resolve<LoggerService>(LoggerService);
   const directories = getDirectories(DOCS_DIR);
   const regex = new RegExp(process.argv[2]);
 
-  console.log('Scanning directories: ', directories);
+  logger.info('Scanning directories:', directories);
 
   for (const dir of directories) {
     if (regex.test(dir)) {

@@ -1,12 +1,14 @@
 import markdownit from 'markdown-it';
 import { full as emoji } from 'markdown-it-emoji';
 import { inject, injectable } from 'tsyringe';
+import { LoggerService } from '../../services/LoggerService';
 import { CodeBlockService } from './CodeBlockService';
 
 @injectable()
 export class MarkdownService {
   constructor(
     @inject(CodeBlockService) private codeBlockService: CodeBlockService,
+    @inject(LoggerService) private logger: LoggerService,
   ) {}
 
   convertMarkdownToHtml(markdownContent: string): string {
@@ -29,20 +31,13 @@ export class MarkdownService {
   }
 
   private processImagePaths(markdown: string): string {
-    // Log all image references found in Markdown
-    console.log(
-      'Original markdown before image processing:',
-      markdown.match(/!\[(.*?)\]\((.*?)\)/g),
-    );
-
     // Transform all image paths to work with our Express server
-    // Handle all possible path formats including direct references to img/
     const processed = markdown
       // Handle ./img/file.png format
       .replace(
         /!\[(.*?)\]\((\.\/img\/(.*?))\)/g,
         (match, alt, fullPath, imgPath) => {
-          console.log(
+          this.logger.debug(
             `Transforming ./img/ path: ${fullPath} -> /img/${imgPath}`,
           );
           return `![${alt}](/img/${imgPath})`;
@@ -52,23 +47,18 @@ export class MarkdownService {
       .replace(
         /!\[(.*?)\]\((img\/(.*?))\)/g,
         (match, alt, fullPath, imgPath) => {
-          console.log(`Transforming img/ path: ${fullPath} -> /img/${imgPath}`);
+          this.logger.debug(
+            `Transforming img/ path: ${fullPath} -> /img/${imgPath}`,
+          );
           return `![${alt}](/img/${imgPath})`;
         },
       )
-      // Handle /img/file.png format (already correctly formatted but log for debugging)
+      // Handle /img/file.png format (already correctly formatted)
       .replace(
         /!\[(.*?)\]\((\/img\/(.*?))\)/g,
-        (match, alt, fullPath, imgPath) => {
-          console.log(`Already correct path format: ${fullPath}`);
-          return match; // No change needed
-        },
+        (match) => match, // No change needed
       );
 
-    console.log(
-      'Processed markdown after image transformation:',
-      processed.match(/!\[(.*?)\]\((?:\/img\/|img\/|\.\/img\/)(.*?)\)/g),
-    );
     return processed;
   }
 
