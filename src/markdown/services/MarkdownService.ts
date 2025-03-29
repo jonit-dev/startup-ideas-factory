@@ -18,7 +18,32 @@ export class MarkdownService {
     // Ensure we are using the styled markdown which contains highlighted HTML
     let htmlContent = md.render(markdownContent);
     htmlContent = this.codeBlockService.transformCodeBlocks(htmlContent);
+
+    // Process mermaid diagrams manually to ensure proper rendering
+    htmlContent = this.processMermaidDiagrams(htmlContent);
+
     return htmlContent;
+  }
+
+  private processMermaidDiagrams(html: string): string {
+    // Look for code blocks with mermaid class
+    const regex =
+      /<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g;
+
+    // Replace them with div elements that Mermaid can process
+    return html.replace(regex, (match, codeContent) => {
+      const decodedContent = this.decodeHtmlEntities(codeContent);
+      return `<div class="mermaid">${decodedContent}</div>`;
+    });
+  }
+
+  private decodeHtmlEntities(str: string): string {
+    return str
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, '&');
   }
 
   getStyledHtmlDocument(htmlContent: string): string {
@@ -44,9 +69,24 @@ https://cdn.jsdelivr.net/npm/highlightjs-solidity@2.0.6/dist/solidity.min.js
 "></script>
     <script>
     hljs.highlightAll();
-
     </script>
 
+    <!-- Mermaid script -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.4.0/dist/mermaid.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        mermaid.initialize({ 
+          startOnLoad: false,
+          securityLevel: 'loose',
+          theme: 'default'
+        });
+        
+        // Initialize mermaid diagrams after page loads
+        setTimeout(() => {
+          mermaid.run();
+        }, 1000);
+      });
+    </script>
  
 </head>
 <body>
