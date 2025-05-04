@@ -36,6 +36,7 @@ This stack combines Supabase as the core BaaS with Cloudflare Workers for edge l
 6.  **Frontend Hosting & CI/CD**: Vercel.
 7.  **Payments & Billing**: Stripe Wrapper (via Supabase).
 8.  **Background Jobs & Workflows**: Trigger.dev.
+9.  **Transactional Email**: Resend (API for sending emails, generous free tier).
 
 ### Architecture Diagram (Mermaid)
 
@@ -95,6 +96,11 @@ flowchart LR
         direction TB
         Trigger[Trigger.dev]
     end
+    subgraph Email
+        direction TB
+        Resend[Resend]
+        style Resend fill:#f9f,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    end
  end
 
  %% Frontend interactions
@@ -115,6 +121,7 @@ flowchart LR
  CFW --> GoogleAnalytics
  CFW --> Amplitude
  CFW --> Trigger
+ CFW --> Resend
 
  %% Supabase interactions
  DB --> PostgresFTS
@@ -125,6 +132,7 @@ flowchart LR
  DB --> Amplitude
  EdgeFuncs --> Trigger
  DB --> StripeW
+ DB --> Resend
 
  %% Style Key
  subgraph Styles ["Key"]
@@ -176,6 +184,7 @@ Here is a markdown table summarizing the costs of the tools and services mention
 | **Nx** | Monorepo Development Tool                        | An open-source development tool/framework, free to use.                                                                                         | No direct cost for the Nx tool itself. Costs would relate to hosting and other services used in the project.                                                                      |
 | **RedwoodJS** | Fullstack Framework                            | An open-source fullstack framework, free to use.                                                                                                | No direct cost for the RedwoodJS framework itself. Costs would be associated with deployment platforms (like Vercel) and other services.                                           |
 | **T3 Stack** | Opinionated Fullstack Starter Kit                | A collection of open-source libraries and conventions, free to use.                                                                             | No direct cost for the T3 Stack itself. Costs depend entirely on the individual services integrated (e.g., databases, hosting, authentication services).                         |
+| **Resend** | Transactional Email API                           | Free tier: 3,000 emails/month.                                                                                                                  | Pay-as-you-go: $0.0025 per email after free tier.                                                                                                                                |
 
 
 ## Security: Avoiding Frontend API Credentials
